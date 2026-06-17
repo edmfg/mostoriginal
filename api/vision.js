@@ -3,7 +3,7 @@
 // Returns: { image: "data:image/png;base64,..." }  (or an error the client falls back from)
 
 const MODEL = 'gemini-3.1-flash-image'; // Nano Banana 2 — speed-optimized
-const ENDPOINT = `https://generativelanguage.googleapis.com/v1/models/${MODEL}:generateContent`;
+const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'method_not_allowed' });
