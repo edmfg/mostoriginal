@@ -177,31 +177,41 @@
       });
     }
 
-    function render(promptText) {
+    async function render(promptText) {
       visionEmpty.hidden = true;
       visionStage.hidden = false;
       if (promptText) askInput.value = promptText;
-      // remove old tags before shimmer
+      // clear old SKU tags
       Array.prototype.slice.call(visionStage.querySelectorAll('.sku-tag')).forEach(function (n) { n.remove(); });
-
-      function reveal() {
-        visionImg.src = VISIONS[visionIdx % VISIONS.length];
-        shimmer.hidden = true;
-        buildTags();
-        // widget spins up after first render
-        widget.hidden = false;
-        widgetThumb.src = VISIONS[visionIdx % VISIONS.length];
-        ask.hidden = false;
-        askChips.hidden = false;
-        resetBtn.hidden = false;
-        rendered = true;
-        visionBtn.innerHTML = '✦ Re-render vision';
-      }
-
-      if (reduceMotion) { reveal(); return; }
       shimmer.hidden = false;
-      clearTimeout(shimmerTimer);
-      shimmerTimer = setTimeout(reveal, 1300);
+      visionBtn.disabled = true;
+
+      // ask Gemini to actually render the selected fit (real image generation)
+      var items = selected.map(function (s) { return s.name; });
+      var imgUrl = null;
+      try {
+        var r = await fetch('/api/vision', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: items, restyle: promptText || '' })
+        });
+        if (r.ok) { var d = await r.json(); if (d && d.image) imgUrl = d.image; }
+      } catch (e) { /* fall through to fallback */ }
+
+      // graceful fallback (localhost / no key / API error): cycle the stock visions
+      if (!imgUrl) imgUrl = VISIONS[visionIdx % VISIONS.length];
+
+      visionImg.src = imgUrl;
+      shimmer.hidden = true;
+      buildTags();
+      widget.hidden = false;
+      widgetThumb.src = imgUrl;
+      ask.hidden = false;
+      askChips.hidden = false;
+      resetBtn.hidden = false;
+      rendered = true;
+      visionBtn.disabled = false;
+      visionBtn.innerHTML = '✦ Re-render vision';
     }
 
     function reset() {
