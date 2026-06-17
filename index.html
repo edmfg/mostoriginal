@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOST ORIGINAL — adidas Originals × Googlebook</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="Internal concept — Most Original: a monthly fan ritual where adidas Originals crowns the most original fit. Magic Pointer on Googlebook turns the page into a styling studio." />
+
+  <!-- Fonts: Anton (display) + Archivo (body/UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind via CDN (utility layer; design system lives in styles.css) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Magic Pointer cursor (sim) -->
+  <div id="magic-cursor"></div>
+
+  <!-- =====================================================================
+       §A  HERO — VIDEO MASTHEAD + WORDMARK
+       ===================================================================== -->
+  <section class="hero" id="top">
+    <video class="hero-video" autoplay muted loop playsinline preload="auto"
+           poster="assets/hero-poster.jpg">
+      <source src="assets/hero-loop.webm" type="video/webm" />
+      <source src="assets/hero-loop.mp4"  type="video/mp4" />
+    </video>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <div class="hero-lockup">
+        <span class="stripes stripes--blue"><span></span><span></span><span></span></span>
+        <span>adidas Originals <span class="muted">×</span> Googlebook</span>
+      </div>
+
+      <h1 class="wordmark display">MOST<span class="l2">ORIGINAL</span></h1>
+
+      <p class="hero-sub">Twelve crowns a year.<br />Be the Most Original.</p>
+      <p class="hero-micro">Point. Style. Get crowned.</p>
+
+      <div class="hero-cta">
+        <a href="#flow" class="btn" data-pointer-action="Enter this month">Enter this month →</a>
+        <a href="#pointer" class="btn btn--ghost" data-pointer-action="See the Pointer">See the Magic Pointer</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">Scroll ↓</div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track" id="marquee-a"></div>
+  </div>
+
+  <!-- =====================================================================
+       §B  THE IDEA
+       ===================================================================== -->
+  <section class="section" id="idea">
+    <div class="wrap idea-grid">
+      <div>
+        <p class="eyebrow">The Idea</p>
+        <h2 class="display section-head">The cover used to belong to magazines. Now it belongs to you.</h2>
+        <p class="lede">Every month, fans style their best head-to-toe adidas Originals look. The community votes. adidas curates. And on the <strong>1st of every month, one fan is crowned the Most Original</strong> — their fit takes over the adidas.com masthead, shoppable and credited.</p>
+        <p class="lede" style="margin-top:1rem">The name does double duty: it's the brand and the prize. Be the Most Original.</p>
+      </div>
+
+      <div class="masthead-mock" data-pointer-action="adidas.com masthead">
+        <div class="fake-nav">
+          <span class="brand">adidas</span>
+          <span>Men</span><span>Women</span><span>Originals</span><span>Most Original</span>
+        </div>
+        <div style="position:relative">
+          <span class="mo-stamp">★ Most Original</span>
+          <img src="assets/masthead.jpg" alt="adidas.com homepage masthead with a fan fit and Most Original stamp" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="stripe-divider" />
+
+  <!-- =====================================================================
+       §C  THE MAGIC POINTER — explainer + interactive sim
+       ===================================================================== -->
+  <section class="section" id="pointer">
+    <div class="wrap">
+      <p class="eyebrow">The Magic Pointer</p>
+      <h2 class="display section-head">Your cursor just got a stylist.</h2>
+      <p class="lede">Magic Pointer is a Googlebook feature that makes any web page actionable. adidas.com is built <em>pointer-legible</em>, so its default actions map straight onto the Most Original flow — no product change, promotional use of a default feature.</p>
+      <p class="sim-hint">↳ Move your cursor over a look below — point-to-pull, visualize, shop.</p>
+
+      <!-- Interactive sim: hover a look → cursor blooms into an action chip -->
+      <div class="pointer-sim">
+        <div class="look" tabindex="0" data-pointer-action="Visualize on me">
+          <img src="assets/look-01.jpg" alt="adidas Originals full-body look 01" />
+          <div class="look-meta"><span>Look 01 · Gazelle</span><span class="act">Visualize on me</span></div>
+        </div>
+        <div class="look" tabindex="0" data-pointer-action="Shop the fit">
+          <img src="assets/look-02.jpg" alt="adidas Originals full-body look 02" />
+          <div class="look-meta"><span>Look 02 · Samba</span><span class="act">Shop the fit</span></div>
+        </div>
+        <div class="look" tabindex="0" data-pointer-action="Pull onto canvas">
+          <img src="assets/look-03.jpg" alt="adidas Originals full-body look 03" />
+          <div class="look-meta"><span>Look 03 · Spezial</span><span class="act">Pull onto canvas</span></div>
+        </div>
+      </div>
+
+      <!-- Three annotated explainer cards -->
+      <div class="pointer-cards">
+        <div class="pcard">
+          <span class="num">01</span>
+          <h4>Point-to-pull</h4>
+          <p>Point at any piece. Pull it onto your canvas.</p>
+        </div>
+        <div class="pcard">
+          <span class="num">02</span>
+          <h4>Visualize-together</h4>
+          <p>See the fit on you, not on a mannequin.</p>
+        </div>
+        <div class="pcard">
+          <span class="num">03</span>
+          <h4>Hover-to-shop</h4>
+          <p>Every look is the look — and the link.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="stripe-divider" />
+
+  <!-- =====================================================================
+       §D  THE USER FLOW — horizontal stepper
+       ===================================================================== -->
+  <section class="section" id="flow">
+    <div class="wrap">
+      <p class="eyebrow">The User Flow</p>
+      <h2 class="display section-head">From your screen to the crown in seven moves.</h2>
+
+      <div class="stepper">
+        <div class="step"><span class="step-n">1</span><h4>Discover</h4><p>You land on adidas.com. Launch co-marketing and this site drive you in.</p></div>
+        <div class="step"><span class="step-n">2</span><h4>Browse</h4><p>Every look is alive. Built pointer-legible, so Magic Pointer makes the page styleable and shoppable on sight.</p></div>
+        <div class="step"><span class="step-n">3</span><h4>Build</h4><p>Style your fit in the Studio. Pull pieces, compose head-to-toe. Native on Googlebook, open to all.</p></div>
+        <div class="step"><span class="step-n">4</span><h4>Submit</h4><p>Drop it in. One click. Rights and usage release captured here.</p></div>
+        <div class="step"><span class="step-n">5</span><h4>Vote</h4><p>The community weighs in. Public gallery, fans shortlist.</p></div>
+        <div class="step"><span class="step-n">6</span><h4>Crowned</h4><p>The 1st. You're the Most Original. adidas curates the winner; masthead takeover, shoppable.</p></div>
+        <div class="step"><span class="step-n">7</span><h4>Flywheel</h4><p>Hall of Originals. Then again. Status and a shoppable look fuel next month.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="stripe-divider" />
+
+  <!-- =====================================================================
+       §E  THE STUDIO
+       ===================================================================== -->
+  <section class="section" id="studio">
+    <div class="wrap studio-grid">
+      <div>
+        <p class="eyebrow">The Studio</p>
+        <h2 class="display section-head">Build the fit. Point by point.</h2>
+        <p class="lede">A styling canvas: catalog rail on the left, your composed look in the center, SKU tags appearing as you build. Pull pieces with the Pointer and compose head-to-toe.</p>
+        <span class="callout">Best on Googlebook — visualize-together makes it native.</span>
+      </div>
+      <div class="studio-mock" data-pointer-action="Open the Studio">
+        <img src="https://placehold.co/1600x1000/0A0A0A/0046FF?text=STUDIO_MOCK+%C2%B7+CATALOG+%E2%86%92+CANVAS+%E2%86%92+SKU+TAGS" alt="Styling canvas mock: catalog rail, composed look, SKU tags — SWAP for real asset" />
+      </div>
+    </div>
+  </section>
+
+  <hr class="stripe-divider" />
+
+  <!-- =====================================================================
+       §F  CROWNED & REWARDED
+       ===================================================================== -->
+  <section class="section" id="crowned">
+    <div class="wrap">
+      <p class="eyebrow">Crowned &amp; Rewarded</p>
+      <h2 class="display section-head">First of the month. Lights on.</h2>
+      <p class="lede">The winning fit takes over the adidas.com masthead — shoppable, credited. Then the reward stack drops.</p>
+
+      <div class="masthead-mock" style="margin-top:2rem" data-pointer-action="The takeover">
+        <div class="fake-nav"><span class="brand">adidas</span><span>Originals</span><span class="volt">Most Original — June</span></div>
+        <div style="position:relative">
+          <span class="mo-stamp">★ Crowned</span>
+          <img src="assets/reward.jpg" alt="Winning look taking over the masthead" />
+        </div>
+      </div>
+
+      <div class="reward-stack">
+        <div class="reward">
+          <span class="who">Everyone</span>
+          <h4>Take the look home</h4>
+          <p>Downloadable winning-look assets — phone wallpaper and social cards.</p>
+        </div>
+        <div class="reward">
+          <span class="who">Googlebook users</span>
+          <h4>Make it your live widget</h4>
+          <p>A “make this your live Most Original widget” prompt — run <strong>Create My Widget</strong> yourself with an adidas-supplied prompt. The live-widget trophy exists only on the device — and adidas built nothing into the product.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="stripe-divider" />
+
+  <!-- =====================================================================
+       §G  WHY IT WORKS  (internal slide)
+       ===================================================================== -->
+  <section class="section section--auto" id="why" style="padding-block:clamp(4rem,8vw,7rem)">
+    <div class="wrap">
+      <p class="eyebrow">Why it works · internal</p>
+      <h2 class="display section-head" style="margin-bottom:0.6rem">adidas owns the experience. Google owns the spotlight.</h2>
+      <p class="lede">The Googlebook is simply the best way to see it.</p>
+
+      <div class="why-grid">
+        <div class="why-col why-col--adidas">
+          <h4>adidas gets the engine</h4>
+          <ul>
+            <li>Monthly shoppable hero content, sourced by fans</li>
+            <li>An owned community on a monthly ritual cadence</li>
+            <li>A commerce flywheel — every featured look is SKU-linked</li>
+            <li>Owns the durable value</li>
+          </ul>
+        </div>
+        <div class="why-col why-col--google">
+          <h4>Google gets the spotlight</h4>
+          <ul>
+            <li>A live, branded Magic Pointer demo on the open web</li>
+            <li>Promotion only — no product change, no eng</li>
+            <li>A third-party proof point for the Googlebook</li>
+            <li>Owns the launch moment</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee marquee--blue" aria-hidden="true">
+    <div class="marquee__track" id="marquee-b"></div>
+  </div>
+
+  <!-- =====================================================================
+       §H  FOOTER
+       ===================================================================== -->
+  <footer class="footer">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.5rem;align-items:flex-start">
+      <div>
+        <div class="lockup">adidas Originals <span class="muted">×</span> Googlebook</div>
+        <p class="muted" style="margin-top:0.4rem;letter-spacing:0.04em">Point. Style. Get crowned.</p>
+      </div>
+      <a href="#top" class="btn btn--ghost" data-pointer-action="Back to top">↑ Back to top</a>
+    </div>
+    <p class="disclaimer">
+      <strong>INTERNAL USE ONLY.</strong> Concept / pitch tool — not for public distribution.
+      #MostOriginal is an unaffiliated concept. adidas, adidas Originals, Gazelle, Samba, Spezial,
+      Google and Googlebook are trademarks of their respective owners and are used here for
+      illustrative, non-commercial pitch purposes only. Do not distribute publicly with brand
+      assets embedded.
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

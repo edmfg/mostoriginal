@@ -1,0 +1,10 @@
+# OS cruft
+.DS_Store
+
+# Raw video download (large) — only the clipped assets/hero-loop.* are committed
+source.mp4
+*.part
+*.ytdl
+
+# Vercel
+.vercel
