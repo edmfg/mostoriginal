@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MOST ORIGINAL — adidas Originals × Googlebook</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23D7FF00'/%3E%3C/svg%3E" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="description" content="Internal concept — Most Original: a weekly fan ritual where the most-voted adidas Originals fit takes over the adidas.com masthead. Magic Pointer on Googlebook turns the page into a styling studio." />
 
@@ -95,19 +96,106 @@
       <p class="lede">Magic Pointer is the Googlebook's Gemini-powered cursor — <strong>select anything on screen to ask Gemini.</strong> Point at it and the cursor blooms into a contextual action chip; pick pieces and they pull onto your canvas; Gemini renders the full fit <em>on you</em> — <em>see your vision</em>, not a mannequin. adidas.com is built <em>pointer-legible</em>, so these default actions map straight onto the Most Original flow. No product change — promotional use of a feature that already ships.</p>
       <p class="sim-hint">↳ It works exactly like the demo below. Move your cursor over a look — select, visualize, shop.</p>
 
-      <!-- Interactive sim: hover a look → cursor blooms into an action chip -->
-      <div class="pointer-sim">
-        <div class="look" tabindex="0" data-pointer-action="Visualize on me">
-          <img src="assets/look-01.jpg" alt="adidas Originals full-body look 01" />
-          <div class="look-meta"><span>Look 01 · Gazelle</span><span class="act">Visualize on me</span></div>
+      <!-- ============ INTERACTIVE MAGIC POINTER STUDIO ============ -->
+      <div class="studio" id="studio">
+
+        <!-- LEFT: the shop (adidas.com — pointer-legible) -->
+        <div class="studio-shop">
+          <div class="browser-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="url">adidas.com/originals/new</span>
+          </div>
+          <div class="shop-head">
+            <span class="shop-kicker">New Arrivals</span>
+            <span class="shop-hint">Select pieces to ask Gemini ↗</span>
+          </div>
+          <div class="shop-grid">
+            <button class="piece" data-piece="gazelle" data-name="Gazelle Indoor" data-price="$120" data-pointer-action="Select to ask Gemini">
+              <img src="assets/tile-gazelle.jpg" alt="adidas Gazelle Indoor, blue" loading="lazy" />
+              <span class="piece-meta"><span>Gazelle Indoor</span><span class="price">$120</span></span>
+              <span class="piece-check">✓ On canvas</span>
+            </button>
+            <button class="piece" data-piece="track" data-name="Firebird Track Top" data-price="$90" data-pointer-action="Select to ask Gemini">
+              <img src="assets/tile-track.jpg" alt="adidas Firebird track top, orange" loading="lazy" />
+              <span class="piece-meta"><span>Firebird Track Top</span><span class="price">$90</span></span>
+              <span class="piece-check">✓ On canvas</span>
+            </button>
+            <button class="piece" data-piece="hoodie" data-name="Trefoil Hoodie" data-price="$80" data-pointer-action="Select to ask Gemini">
+              <img src="assets/tile-hoodie.jpg" alt="adidas Trefoil hoodie, orange" loading="lazy" />
+              <span class="piece-meta"><span>Trefoil Hoodie</span><span class="price">$80</span></span>
+              <span class="piece-check">✓ On canvas</span>
+            </button>
+            <button class="piece" data-piece="jogger" data-name="Trefoil Jogger" data-price="$70" data-pointer-action="Select to ask Gemini">
+              <img src="assets/tile-jogger.jpg" alt="adidas Trefoil jogger, orange" loading="lazy" />
+              <span class="piece-meta"><span>Trefoil Jogger</span><span class="price">$70</span></span>
+              <span class="piece-check">✓ On canvas</span>
+            </button>
+            <button class="piece" data-piece="graphic" data-name="Graphic Tracksuit" data-price="$160" data-pointer-action="Select to ask Gemini">
+              <img src="assets/tile-graphic.jpg" alt="adidas graphic tracksuit, blue" loading="lazy" />
+              <span class="piece-meta"><span>Graphic Tracksuit</span><span class="price">$160</span></span>
+              <span class="piece-check">✓ On canvas</span>
+            </button>
+            <button class="piece" data-piece="print" data-name="Summit Track Jacket" data-price="$110" data-pointer-action="Select to ask Gemini">
+              <img src="assets/tile-print.jpg" alt="adidas Summit track jacket, mountain print" loading="lazy" />
+              <span class="piece-meta"><span>Summit Track Jacket</span><span class="price">$110</span></span>
+              <span class="piece-check">✓ On canvas</span>
+            </button>
+          </div>
         </div>
-        <div class="look" tabindex="0" data-pointer-action="Shop the fit">
-          <img src="assets/look-02.jpg" alt="adidas Originals full-body look 02" />
-          <div class="look-meta"><span>Look 02 · Samba</span><span class="act">Shop the fit</span></div>
-        </div>
-        <div class="look" tabindex="0" data-pointer-action="Pull onto canvas">
-          <img src="assets/look-03.jpg" alt="adidas Originals full-body look 03" />
-          <div class="look-meta"><span>Look 03 · Spezial</span><span class="act">Pull onto canvas</span></div>
+
+        <!-- RIGHT: the canvas + Gemini vision -->
+        <div class="studio-canvas">
+          <div class="canvas-head">
+            <span class="spark">✦</span>
+            <span>Your canvas — <strong id="tray-count">0</strong> pieces</span>
+          </div>
+
+          <!-- collected pieces tray -->
+          <div class="tray" id="tray">
+            <p class="tray-empty" id="tray-empty">Point at a piece and select it. It pulls onto your canvas here.</p>
+          </div>
+
+          <!-- ask Gemini prompt chips (restyle) -->
+          <div class="ask" id="ask" hidden>
+            <span class="ask-spark">✦</span>
+            <input class="ask-input" id="ask-input" type="text" value="Style this head-to-toe on me" readonly aria-label="Ask Gemini prompt" />
+            <button class="ask-go" id="ask-go" data-pointer-action="Ask Gemini">▸</button>
+          </div>
+          <div class="ask-chips" id="ask-chips" hidden>
+            <button class="chip" data-prompt="Make it more streetwear" data-pointer-action="Ask Gemini">Make it more streetwear</button>
+            <button class="chip" data-prompt="Swap to all-blue" data-pointer-action="Ask Gemini">Swap to all-blue</button>
+            <button class="chip" data-prompt="Dial up the volt" data-pointer-action="Ask Gemini">Dial up the volt</button>
+          </div>
+
+          <button class="btn vision-btn" id="vision-btn" disabled data-pointer-action="See your vision">✦ See your vision</button>
+
+          <!-- the vision stage -->
+          <div class="vision" id="vision" aria-live="polite">
+            <div class="vision-empty" id="vision-empty">
+              <span class="spark big">✦</span>
+              <p>Gemini renders your fit <em>on you</em> here.</p>
+            </div>
+            <div class="vision-stage" id="vision-stage" hidden>
+              <img class="vision-img" id="vision-img" src="" alt="Your look, visualized by Gemini" />
+              <div class="shimmer" id="shimmer" hidden><span>✦ Gemini is rendering your vision…</span></div>
+              <!-- hover-to-shop SKU tags injected by JS -->
+            </div>
+          </div>
+
+          <!-- live "Most Original" widget (spins up after first render) -->
+          <div class="widget" id="widget" hidden>
+            <div class="widget-head"><span class="spark">✦</span> Most Original — This Week <span class="widget-live">● LIVE</span></div>
+            <div class="widget-body">
+              <img id="widget-thumb" src="" alt="Your Most Original look" />
+              <div>
+                <p class="widget-title">Your fit is live on your Googlebook.</p>
+                <p class="widget-sub">Vote opens Monday. Top fit takes the masthead.</p>
+                <button class="btn btn--ghost widget-cta" data-pointer-action="Submit this fit">Submit this fit →</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="studio-reset" id="studio-reset" hidden data-pointer-action="Start over">↺ Start over</button>
         </div>
       </div>
 

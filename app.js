@@ -77,4 +77,181 @@
 
   buildMarquee('marquee-a', MARQUEE_TEXT);
   buildMarquee('marquee-b', MARQUEE_TEXT);
+
+  /* =========================================================================
+     (3) MAGIC POINTER STUDIO — select-to-pull → "see your vision" → shop
+     ========================================================================= */
+  var studio = document.getElementById('studio');
+  if (studio) {
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var pieces      = Array.prototype.slice.call(studio.querySelectorAll('.piece'));
+    var tray        = document.getElementById('tray');
+    var trayEmpty   = document.getElementById('tray-empty');
+    var trayCount   = document.getElementById('tray-count');
+    var visionBtn   = document.getElementById('vision-btn');
+    var visionEmpty = document.getElementById('vision-empty');
+    var visionStage = document.getElementById('vision-stage');
+    var visionImg   = document.getElementById('vision-img');
+    var shimmer     = document.getElementById('shimmer');
+    var ask         = document.getElementById('ask');
+    var askInput    = document.getElementById('ask-input');
+    var askChips    = document.getElementById('ask-chips');
+    var widget      = document.getElementById('widget');
+    var widgetThumb = document.getElementById('widget-thumb');
+    var resetBtn    = document.getElementById('studio-reset');
+
+    var VISIONS = ['assets/vision-1.jpg', 'assets/vision-2.jpg', 'assets/vision-3.jpg'];
+    // hotspot coords (% of stage) for hover-to-shop SKU tags
+    var TAG_SPOTS = [[16, 30], [60, 52], [30, 74]];
+
+    var selected = [];          // [{key,name,price,src}]
+    var visionIdx = 0;
+    var rendered = false;
+    var shimmerTimer = null;
+
+    function findSel(key) {
+      for (var i = 0; i < selected.length; i++) if (selected[i].key === key) return i;
+      return -1;
+    }
+
+    function togglePiece(btn) {
+      var key = btn.dataset.piece;
+      var idx = findSel(key);
+      if (idx > -1) {
+        selected.splice(idx, 1);
+        btn.classList.remove('selected');
+      } else {
+        selected.push({
+          key: key,
+          name: btn.dataset.name,
+          price: btn.dataset.price,
+          src: btn.querySelector('img').getAttribute('src')
+        });
+        btn.classList.add('selected');
+      }
+      renderTray();
+    }
+
+    function renderTray() {
+      // rebuild thumbnails
+      Array.prototype.slice.call(tray.querySelectorAll('.tray-thumb')).forEach(function (n) { n.remove(); });
+      selected.forEach(function (s) {
+        var t = document.createElement('div');
+        t.className = 'tray-thumb';
+        t.style.backgroundImage = 'url(' + s.src + ')';
+        t.title = s.name;
+        var x = document.createElement('button');
+        x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label', 'Remove ' + s.name);
+        x.addEventListener('click', function () {
+          var b = studio.querySelector('.piece[data-piece="' + s.key + '"]');
+          if (b) togglePiece(b);
+        });
+        t.appendChild(x);
+        tray.appendChild(t);
+      });
+      var n = selected.length;
+      trayCount.textContent = n;
+      trayEmpty.style.display = n ? 'none' : '';
+      visionBtn.disabled = n === 0;
+    }
+
+    function buildTags() {
+      // clear old
+      Array.prototype.slice.call(visionStage.querySelectorAll('.sku-tag')).forEach(function (n) { n.remove(); });
+      var items = selected.length ? selected : pieces.slice(0, 3).map(function (b) {
+        return { name: b.dataset.name, price: b.dataset.price };
+      });
+      items.slice(0, 3).forEach(function (s, i) {
+        var tag = document.createElement('button');
+        tag.type = 'button';
+        tag.className = 'sku-tag';
+        tag.style.left = TAG_SPOTS[i][0] + '%';
+        tag.style.top = TAG_SPOTS[i][1] + '%';
+        tag.setAttribute('data-pointer-action', 'Shop the fit');
+        tag.innerHTML = s.name + ' <span class="sku-price">' + s.price + '</span>';
+        bindPointer(tag);
+        visionStage.appendChild(tag);
+        // staggered fade-in
+        setTimeout(function () { tag.classList.add('in'); }, reduceMotion ? 0 : 220 + i * 180);
+      });
+    }
+
+    function render(promptText) {
+      visionEmpty.hidden = true;
+      visionStage.hidden = false;
+      if (promptText) askInput.value = promptText;
+      // remove old tags before shimmer
+      Array.prototype.slice.call(visionStage.querySelectorAll('.sku-tag')).forEach(function (n) { n.remove(); });
+
+      function reveal() {
+        visionImg.src = VISIONS[visionIdx % VISIONS.length];
+        shimmer.hidden = true;
+        buildTags();
+        // widget spins up after first render
+        widget.hidden = false;
+        widgetThumb.src = VISIONS[visionIdx % VISIONS.length];
+        ask.hidden = false;
+        askChips.hidden = false;
+        resetBtn.hidden = false;
+        rendered = true;
+        visionBtn.innerHTML = '✦ Re-render vision';
+      }
+
+      if (reduceMotion) { reveal(); return; }
+      shimmer.hidden = false;
+      clearTimeout(shimmerTimer);
+      shimmerTimer = setTimeout(reveal, 1300);
+    }
+
+    function reset() {
+      selected = [];
+      visionIdx = 0;
+      rendered = false;
+      pieces.forEach(function (b) { b.classList.remove('selected'); });
+      renderTray();
+      visionStage.hidden = true;
+      visionEmpty.hidden = false;
+      shimmer.hidden = true;
+      widget.hidden = true;
+      ask.hidden = true;
+      askChips.hidden = true;
+      resetBtn.hidden = true;
+      visionBtn.innerHTML = '✦ See your vision';
+    }
+
+    pieces.forEach(function (b) { b.addEventListener('click', function () { togglePiece(b); }); });
+
+    visionBtn.addEventListener('click', function () {
+      if (selected.length === 0) return;
+      if (rendered) visionIdx++;        // re-render → next look
+      render();
+    });
+
+    Array.prototype.slice.call(askChips.querySelectorAll('.chip')).forEach(function (c) {
+      c.addEventListener('click', function () {
+        visionIdx++;
+        render(c.dataset.prompt);
+      });
+    });
+
+    resetBtn.addEventListener('click', reset);
+    renderTray();
+  }
+
+  /* expose cursor binding for dynamically created [data-pointer-action] nodes */
+  function bindPointer(el) {
+    if (!document.body.classList.contains('pointer-on')) return;
+    var c = document.getElementById('magic-cursor');
+    if (!c) return;
+    el.addEventListener('mouseenter', function () {
+      c.dataset.label = el.dataset.pointerAction;
+      c.classList.add('active');
+      el.classList.add('pointer-target');
+    });
+    el.addEventListener('mouseleave', function () {
+      c.classList.remove('active');
+      el.classList.remove('pointer-target');
+    });
+  }
 })();
