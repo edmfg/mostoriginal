@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: false, reason: 'GEMINI_KEY env var is not set on this project.' });
   }
   try {
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1/models/${MODEL}:generateContent`, {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`, {
       method: 'POST',
       headers: { 'x-goog-api-key': key, 'Content-Type': 'application/json' },
       body: JSON.stringify({

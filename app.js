@@ -115,6 +115,28 @@
       return -1;
     }
 
+    // Downscale a (same-origin) product image to a base64 data URL so we can hand the
+    // actual garments to the API and keep the request payload small.
+    function loadImageDataURL(url, maxSide) {
+      return new Promise(function (resolve) {
+        var img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function () {
+          var w = img.naturalWidth || 1, h = img.naturalHeight || 1;
+          var scale = Math.min(1, maxSide / Math.max(w, h));
+          var cw = Math.max(1, Math.round(w * scale)), ch = Math.max(1, Math.round(h * scale));
+          var c = document.createElement('canvas');
+          c.width = cw; c.height = ch;
+          try {
+            c.getContext('2d').drawImage(img, 0, 0, cw, ch);
+            resolve(c.toDataURL('image/jpeg', 0.85));
+          } catch (e) { resolve(null); } // tainted canvas / CORS
+        };
+        img.onerror = function () { resolve(null); };
+        img.src = url;
+      });
+    }
+
     function togglePiece(btn) {
       var key = btn.dataset.piece;
       var idx = findSel(key);
@@ -186,14 +208,18 @@
       shimmer.hidden = false;
       visionBtn.disabled = true;
 
-      // ask Gemini to actually render the selected fit (real image generation)
+      // ask Gemini to actually render the selected fit (real image generation).
+      // When 2+ pieces are picked it remixes the real product images into one new outfit.
       var items = selected.map(function (s) { return s.name; });
       var imgUrl = null;
       try {
+        var images = (await Promise.all(
+          selected.map(function (s) { return loadImageDataURL(s.src, 1024); })
+        )).filter(Boolean);
         var r = await fetch('/api/vision', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: items, restyle: promptText || '' })
+          body: JSON.stringify({ items: items, restyle: promptText || '', images: images })
         });
         if (r.ok) { var d = await r.json(); if (d && d.image) imgUrl = d.image; }
       } catch (e) { /* fall through to fallback */ }
